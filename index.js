@@ -1,8 +1,12 @@
 document.addEventListener("DOMContentLoaded", function () {
   const navLinks = document.querySelectorAll(".nav-link");
-  const iframe = document.getElementById("content-frame");
+  const iframe = document.getElementsByTagName("iframe")[0];
 
-  // Load calendar.html by default
+  if (!iframe) {
+    return;
+  }
+
+  // loading calendar as default
   iframe.src = "calendar.html";
 
   navLinks.forEach((link) => {
@@ -10,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
       event.preventDefault();
       const page = this.getAttribute("href");
 
-      // Change iframe src to the clicked page
+      // switching to other pages
       iframe.src = page;
     });
   });
