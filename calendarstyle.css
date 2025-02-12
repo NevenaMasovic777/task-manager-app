@@ -1,0 +1,65 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Courier New", Courier, monospace;
+}
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #f597ac;
+}
+.wrapper {
+  width: 450px;
+  background: #f9becb;
+  border-radius: 10px;
+}
+.wrapper header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 25px 30px 10px;
+}
+header .current-date {
+  font-size: 16px;
+  font-weight: 1000;
+}
+header .icons span {
+  height: 38px;
+  width: 38px;
+  margin: 0 1px;
+  text-align: center;
+  line-height: 38px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+header .icons span:hover {
+  background: #f48aa2;
+}
+header .icons span:last-child {
+  margin-right: -10px;
+}
+.calendar {
+  padding: 20px;
+}
+.calendar ul {
+  display: flex;
+  list-style: none;
+  flex-wrap: wrap;
+  text-align: center;
+}
+.calendar .weeks li {
+  font-weight: 1000;
+}
+.calendar .days {
+  margin-bottom: 20px;
+}
+.calendar .days li {
+  cursor: pointer;
+  margin-top: 30px;
+}
+.calendar ul li {
+  width: calc(100% / 7);
+}
