@@ -2,6 +2,34 @@ document.addEventListener("DOMContentLoaded", function () {
   const inputField = document.querySelector(".new-task input");
   const addButton = document.querySelector(".add-task");
   const taskList = document.querySelector(".tasks");
+  const noTaskMessage = document.createElement("div");
+  noTaskMessage.classList.add("no-task-message");
+  noTaskMessage.innerHTML = `There are no tasks to complete—relax and enjoy your day! <img src="images/confetti.png" alt="Confetti" width=0px>`;
+  taskList.parentElement.appendChild(noTaskMessage);
+
+  // Function to update move button states and display message when no tasks exist
+  function updateMoveButtonsState() {
+    const tasks = document.querySelectorAll(".task-item-container");
+
+    if (tasks.length === 0) {
+      noTaskMessage.style.display = "block";
+    } else {
+      noTaskMessage.style.display = "none";
+    }
+
+    tasks.forEach((task) => {
+      const upButton = task.querySelector(".move-up");
+      const downButton = task.querySelector(".move-down");
+
+      if (tasks.length === 1) {
+        upButton.style.display = "none";
+        downButton.style.display = "none";
+      } else {
+        upButton.style.display = "inline-block";
+        downButton.style.display = "inline-block";
+      }
+    });
+  }
 
   function addTask() {
     const taskText = inputField.value.trim();
@@ -10,6 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Create task container
     const taskContainer = document.createElement("div");
     taskContainer.classList.add("task-item-container");
+    taskContainer.style.width = "100%"; // Fixed width for container
 
     // Create move buttons container (side by side)
     const moveButtons = document.createElement("div");
@@ -65,6 +94,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Event Listener: Delete Task
     deleteButton.addEventListener("click", () => {
       taskContainer.remove();
+      updateMoveButtonsState();
     });
 
     // Event Listener: Move Task Up
@@ -74,6 +104,7 @@ document.addEventListener("DOMContentLoaded", function () {
           taskContainer,
           taskContainer.previousElementSibling
         );
+        updateMoveButtonsState();
       }
     });
 
@@ -81,6 +112,7 @@ document.addEventListener("DOMContentLoaded", function () {
     downButton.addEventListener("click", () => {
       if (taskContainer.nextElementSibling) {
         taskList.insertBefore(taskContainer.nextElementSibling, taskContainer);
+        updateMoveButtonsState();
       }
     });
 
@@ -96,6 +128,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // Clear input field after adding task
     inputField.value = "";
     inputField.focus(); // Keeps focus on input field for new entries
+
+    updateMoveButtonsState();
   }
 
   // Add event listeners for adding tasks on both button click & Enter key
@@ -105,4 +139,6 @@ document.addEventListener("DOMContentLoaded", function () {
       addTask();
     }
   });
+
+  updateMoveButtonsState();
 });

@@ -135,6 +135,25 @@ body {
   color: gray;
 }
 
+.no-task-message {
+  display: flex;
+  flex-direction: column; /* Stack image and text vertically */
+  align-items: center; /* Horizontally centers content */
+  justify-content: center; /* Centers content vertically */
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: -150px; /* Moves the message up */
+  position: relative;
+  width: 100%; /* Ensures it spans the full container */
+}
+
+.no-task-message img {
+  width: 80px; /* Adjust size as needed */
+  margin: 0 auto 10px auto; /* Centers image and adds space below */
+  display: block;
+}
+
 /* Task Action Buttons */
 .complete-task,
 .edit-task,
