@@ -1,0 +1,219 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Courier New", Courier, monospace;
+}
+
+body {
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.new-task {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.new-task input {
+  width: 60%;
+  min-width: 300px;
+  max-width: 400px;
+  height: 40px;
+  font-size: 16px;
+  border: 2px solid #f597ac;
+  padding: 10px 15px;
+  border-radius: 8px;
+  background: #fff;
+  color: #333;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
+}
+
+.new-task input:focus {
+  border-color: #e85d75;
+  outline: none;
+  box-shadow: 0px 4px 15px rgba(248, 97, 123, 0.5);
+}
+
+.add-task {
+  height: 45px;
+  background: #f597ac;
+  color: white;
+  font-size: 16px;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.add-task:hover {
+  background: #e85d75;
+  box-shadow: 0px 4px 12px rgba(232, 93, 117, 0.4);
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .new-task {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .new-task input {
+    width: 80%;
+    min-width: 200px;
+    font-size: 14px;
+  }
+
+  .add-task {
+    width: 80%;
+    text-align: center;
+  }
+}
+
+.task-list {
+  margin-top: 120px;
+  text-align: center;
+}
+
+.tasks {
+  list-style: none;
+  padding: 0;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Task container (Ensures fixed width for all tasks) */
+.task-item-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 10px;
+}
+
+/* Task Box (Fixed Width) */
+.task-item {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-radius: 8px;
+  border: 2px solid #f597ac;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+.task-text {
+  flex-grow: 1;
+  font-size: 16px;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.completed {
+  text-decoration: line-through;
+  color: gray;
+}
+
+.no-task-message {
+  display: flex;
+  flex-direction: column; /* Stack image and text vertically */
+  align-items: center; /* Horizontally centers content */
+  justify-content: center; /* Centers content vertically */
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: -150px; /* Moves the message up */
+  position: relative;
+  width: 100%; /* Ensures it spans the full container */
+}
+
+.no-task-message img {
+  width: 80px; /* Adjust size as needed */
+  margin: 0 auto 10px auto; /* Centers image and adds space below */
+  display: block;
+}
+
+/* Task Action Buttons */
+.complete-task,
+.edit-task,
+.delete-task {
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+/* Move Up & Down Buttons */
+.move-buttons {
+  display: flex;
+  gap: 2px;
+}
+
+.move-up,
+.move-down {
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+}
+
+/* Tooltip styles */
+.complete-task:hover::after,
+.edit-task:hover::after,
+.delete-task:hover::after,
+.move-up:hover::after,
+.move-down:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #333;
+  color: #fff;
+  font-size: 12px;
+  padding: 5px 8px;
+  border-radius: 5px;
+  white-space: nowrap;
+  opacity: 1;
+  visibility: visible;
+}
+
+.complete-task img,
+.edit-task img,
+.delete-task img {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.2s;
+}
+
+.move-up img,
+.move-down img {
+  width: 30x;
+  height: 30px;
+  transition: transform 0.2s;
+}
+
+.complete-task:hover img,
+.edit-task:hover img,
+.delete-task:hover img,
+.move-up:hover img,
+.move-down:hover img {
+  transform: scale(1.1);
+}
