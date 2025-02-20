@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./events.css" />
+    <title>Events</title>
+  </head>
+  <body>
+    <div class="event-container">
+      <div class="new-event">
+        <input type="text" placeholder="Add event" />
+        <button class="add-event">Add</button>
+      </div>
+      <div class="event-list">
+        <ul class="events"></ul>
+      </div>
+    </div>
+
+    <!-- Event Modal -->
+    <div class="modal-overlay"></div>
+    <div class="event-modal">
+      <h3>Add New Event</h3>
+      <label for="event-name">Event Name</label>
+      <input type="text" id="event-name" placeholder="Enter event name" />
+
+      <label for="event-category">Category</label>
+      <select id="event-category">
+        <option value="birthday">Birthday</option>
+        <option value="meeting">Meeting</option>
+        <option value="anniversary">Anniversary</option>
+        <option value="other">Other</option>
+      </select>
+
+      <label for="event-date">Date</label>
+      <input type="date" id="event-date" />
+
+      <label for="event-note">Special Note</label>
+      <textarea id="event-note" placeholder="Enter any notes..."></textarea>
+
+      <div class="modal-buttons">
+        <button class="save-event">Save</button>
+        <button class="close-modal">Cancel</button>
+      </div>
+    </div>
+
+    <script defer src="events.js"></script>
+  </body>
+</html>
