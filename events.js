@@ -15,21 +15,34 @@ document.addEventListener("DOMContentLoaded", function () {
   const eventDateInput = document.getElementById("event-date");
   const eventNoteInput = document.getElementById("event-note");
 
-  // Open modal
-  function openModal() {
-    eventNameInput.value = eventInputField.value.trim();
+  let currentEventItem = null; // Stores event being edited
+
+  // Open modal for new or existing event
+  function openModal(eventItem = null) {
+    currentEventItem = eventItem;
+    if (eventItem) {
+      // Pre-fill modal for editing
+      eventNameInput.value =
+        eventItem.querySelector(".event-title").textContent;
+      eventCategoryInput.value = eventItem.dataset.category;
+      eventDateInput.value = eventItem.querySelector(".event-date").textContent;
+      eventNoteInput.value =
+        eventItem.querySelector(".event-note")?.textContent || "";
+    } else {
+      resetForm();
+      eventNameInput.value = eventInputField.value.trim();
+    }
     modal.style.display = "block";
     overlay.style.display = "block";
   }
 
-  // Close modal
+  // Close modal & reset form
   function closeModal() {
     modal.style.display = "none";
     overlay.style.display = "none";
     resetForm();
   }
 
-  // Reset form fields
   function resetForm() {
     eventNameInput.value = "";
     eventCategoryInput.value = "birthday";
@@ -37,12 +50,11 @@ document.addEventListener("DOMContentLoaded", function () {
     eventNoteInput.value = "";
   }
 
-  // Get event icon based on category
   function getEventIcon(category) {
     return `images/${category}.png`;
   }
 
-  // Save event
+  // Save event (New or Edited)
   function saveEvent() {
     const name = eventNameInput.value.trim();
     const category = eventCategoryInput.value;
@@ -54,7 +66,12 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    addEvent(name, category, date, note);
+    if (currentEventItem) {
+      updateEvent(currentEventItem, name, category, date, note);
+    } else {
+      addEvent(name, category, date, note);
+    }
+
     closeModal();
     eventInputField.value = "";
     eventInputField.placeholder = "Add event";
@@ -62,15 +79,40 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Add event in sorted order
   function addEvent(name, category, date, note) {
+    const eventItem = createEventItem(name, category, date, note);
+    insertSortedEvent(eventItem);
+  }
+
+  // Update existing event and reinsert it
+  function updateEvent(eventItem, name, category, date, note) {
+    eventItem.dataset.category = category;
+    eventItem.querySelector(".event-title").textContent = name;
+    eventItem.querySelector(".event-date").textContent = date;
+    eventItem.querySelector(".event-info p")?.remove(); // Remove old note
+
+    if (note) {
+      const noteElement = document.createElement("p");
+      noteElement.classList.add("event-note");
+      noteElement.textContent = note;
+      eventItem.querySelector(".event-info").appendChild(noteElement);
+    }
+
+    eventItem.querySelector(".event-icon").src = getEventIcon(category);
+    insertSortedEvent(eventItem, true);
+  }
+
+  // Create event item element
+  function createEventItem(name, category, date, note) {
     const eventItem = document.createElement("div");
     eventItem.classList.add("event-item-container");
+    eventItem.dataset.category = category;
 
     eventItem.innerHTML = `
       <img src="${getEventIcon(category)}" class="event-icon">
       <div class="event-info">
-        <strong>${name}</strong> - ${category.toUpperCase()}<br>
+        <strong class="event-title">${name}</strong> - ${category.toUpperCase()}<br>
         <span class="event-date">${date}</span>
-        ${note ? `<p>${note}</p>` : ""}
+        ${note ? `<p class="event-note">${note}</p>` : ""}
       </div>
       <div class="event-actions">
         <button class="edit-event"><img src="images/edit.png"></button>
@@ -78,27 +120,38 @@ document.addEventListener("DOMContentLoaded", function () {
       </div>
     `;
 
-    // Insert event at the correct position based on date
-    let inserted = false;
-    const eventItems = eventList.querySelectorAll(".event-item-container");
+    eventItem
+      .querySelector(".edit-event")
+      .addEventListener("click", () => openModal(eventItem));
+    return eventItem;
+  }
 
+  // Insert event in correct order
+  function insertSortedEvent(eventItem, isUpdate = false) {
+    if (isUpdate) eventList.removeChild(eventItem);
+
+    const eventItems = [...eventList.querySelectorAll(".event-item-container")];
+    const eventDate = new Date(
+      eventItem.querySelector(".event-date").textContent
+    );
+
+    let inserted = false;
     for (const existingEvent of eventItems) {
-      const existingDate =
-        existingEvent.querySelector(".event-date").textContent;
-      if (new Date(date) < new Date(existingDate)) {
+      const existingDate = new Date(
+        existingEvent.querySelector(".event-date").textContent
+      );
+      if (eventDate < existingDate) {
         eventList.insertBefore(eventItem, existingEvent);
         inserted = true;
         break;
       }
     }
 
-    if (!inserted) {
-      eventList.appendChild(eventItem);
-    }
+    if (!inserted) eventList.appendChild(eventItem);
   }
 
   // Event Listeners
-  addEventButton.addEventListener("click", openModal);
+  addEventButton.addEventListener("click", () => openModal());
   eventInputField.addEventListener("keypress", (event) => {
     if (event.key === "Enter") openModal();
   });
