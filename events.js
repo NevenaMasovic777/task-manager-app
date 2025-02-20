@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function openModal(eventItem = null) {
     currentEventItem = eventItem;
     if (eventItem) {
-      // Pre-fill modal for editing
+      // Editing existing event
       eventNameInput.value =
         eventItem.querySelector(".event-title").textContent;
       eventCategoryInput.value = eventItem.dataset.category;
@@ -101,6 +101,11 @@ document.addEventListener("DOMContentLoaded", function () {
     insertSortedEvent(eventItem, true);
   }
 
+  // Delete event
+  function deleteEvent(eventItem) {
+    eventItem.remove();
+  }
+
   // Create event item element
   function createEventItem(name, category, date, note) {
     const eventItem = document.createElement("div");
@@ -123,6 +128,10 @@ document.addEventListener("DOMContentLoaded", function () {
     eventItem
       .querySelector(".edit-event")
       .addEventListener("click", () => openModal(eventItem));
+    eventItem
+      .querySelector(".delete-event")
+      .addEventListener("click", () => deleteEvent(eventItem));
+
     return eventItem;
   }
 
